@@ -1,0 +1,92 @@
+using System;
+using System.Collections.Generic;
+
+// Создаем класс Car
+class Car : IEquatable<Car>
+{
+    // Свойства класса Car
+    public string Name { get; set; }
+    public string Engine { get; set; }
+    public int MaxSpeed { get; set; }
+
+    // Конструктор класса Car
+    public Car(string name, string engine, int maxSpeed)
+    {
+        Name = name;
+        Engine = engine;
+        MaxSpeed = maxSpeed;
+    }
+
+    // Переопределение метода ToString() для класса Car
+    public override string ToString()
+    {
+        return Name;
+    }
+
+    // Реализация метода Equals для интерфейса IEquatable<Car>
+    public bool Equals(Car other)
+    {
+        if (other == null)
+            return false;
+
+        return Name == other.Name && Engine == other.Engine && MaxSpeed == other.MaxSpeed;
+    }
+}
+
+// Создаем класс CarsCatalog
+class CarsCatalog
+{
+    private List<Car> cars = new List<Car>();
+
+    // Индексатор для класса CarsCatalog
+    public string this[int index]
+    {
+        get
+        {
+            if (index >= 0 && index < cars.Count)
+            {
+                Car car = cars[index];
+                return $"{car.Name} ({car.Engine})";
+            }
+            else
+            {
+                return "Index out of range";
+            }
+        }
+    }
+
+    // Метод для добавления машины в каталог
+    public void AddCar(Car car)
+    {
+        cars.Add(car);
+    }
+
+    // Получить количество машин в каталоге
+    public int Count => cars.Count;
+}
+
+class Program
+{
+    static void Main()
+    {
+        // Создаем большой каталог машин
+        CarsCatalog catalog = new CarsCatalog();
+
+        catalog.AddCar(new Car("Toyota Camry", "V6", 200));
+        catalog.AddCar(new Car("Honda Civic", "Inline-4", 160));
+        catalog.AddCar(new Car("Ford Mustang", "V8", 250));
+        catalog.AddCar(new Car("Chevrolet Corvette", "V8", 280));
+        catalog.AddCar(new Car("Nissan Altima", "V6", 190));
+
+        // Проверка индексатора без вывода элементов, которых нет в каталоге
+        int catalogSize = catalog.Count;
+        for (int i = 0; i < catalogSize; i++)
+        {
+            Console.WriteLine($"Car {i + 1}: {catalog[i]}");
+        }
+
+        // Ожидание ввода пользователя перед завершением программы
+        Console.ReadLine();
+    }
+}
+
