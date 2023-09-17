@@ -1,0 +1,97 @@
+using System;
+
+struct Vector
+{
+    public double X { get; }
+    public double Y { get; }
+    public double Z { get; }
+
+    public Vector(double x, double y, double z)
+    {
+        X = x;
+        Y = y;
+        Z = z;
+    }
+
+    // Переопределение оператора сложения векторов
+    public static Vector operator +(Vector v1, Vector v2)
+    {
+        return new Vector(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
+    }
+
+    // Переопределение оператора умножения векторов
+    public static Vector operator *(Vector v1, Vector v2)
+    {
+        return new Vector(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z);
+    }
+
+    // Переопределение оператора умножения вектора на число
+    public static Vector operator *(Vector v, double scalar)
+    {
+        return new Vector(v.X * scalar, v.Y * scalar, v.Z * scalar);
+    }
+
+    // Переопределение оператора сравнения по длине
+    public static bool operator >(Vector v1, Vector v2)
+    {
+        double length1 = Math.Sqrt(v1.X * v1.X + v1.Y * v1.Y + v1.Z * v1.Z);
+        double length2 = Math.Sqrt(v2.X * v2.X + v2.Y * v2.Y + v2.Z * v2.Z);
+        return length1 > length2;
+    }
+
+    public static bool operator <(Vector v1, Vector v2)
+    {
+        double length1 = Math.Sqrt(v1.X * v1.X + v1.Y * v1.Y + v1.Z * v1.Z);
+        double length2 = Math.Sqrt(v2.X * v2.X + v2.Y * v2.Y + v2.Z * v2.Z);
+        return length1 < length2;
+    }
+
+    public static bool operator >=(Vector v1, Vector v2)
+    {
+        return !(v1 < v2);
+    }
+
+    public static bool operator <=(Vector v1, Vector v2)
+    {
+        return !(v1 > v2);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // Создаем генератор случайных чисел
+        Random random = new Random();
+
+        // Генерируем случайные числа
+        double x1 = random.NextDouble();
+        double y1 = random.NextDouble();
+        double z1 = random.NextDouble();
+
+        double x2 = random.NextDouble();
+        double y2 = random.NextDouble();
+        double z2 = random.NextDouble();
+
+        Console.WriteLine("Случайные числа для vector1: X = " + x1 + ", Y = " + y1 + ", Z = " + z1);
+        Console.WriteLine("Случайные числа для vector2: X = " + x2 + ", Y = " + y2 + ", Z = " + z2);
+
+        // Создаем векторы с сгенерированными случайными числами
+        Vector vector1 = new Vector(x1, y1, z1);
+        Vector vector2 = new Vector(x2, y2, z2);
+
+        Vector sum = vector1 + vector2;
+        Vector product = vector1 * vector2;
+        Vector scaled = vector1 * 2.5;
+
+        Console.WriteLine("Сумма: X = " + sum.X + ", Y = " + sum.Y + ", Z = " + sum.Z);
+        Console.WriteLine("Произведение: X = " + product.X + ", Y = " + product.Y + ", Z = " + product.Z);
+        Console.WriteLine("Умножение на скаляр: X = " + scaled.X + ", Y = " + scaled.Y + ", Z = " + scaled.Z);
+
+        bool compareResult = vector1 > vector2;
+        Console.WriteLine("Сравнение по длине: vector1 > vector2 = " + compareResult);
+
+        // Ожидание нажатия клавиши Enter перед завершением программы
+        Console.ReadLine();
+    }
+}
