@@ -1,0 +1,84 @@
+using System;
+
+class Currency
+{
+    public decimal Value { get; set; }
+
+    public Currency(decimal value)
+    {
+        Value = value;
+    }
+}
+
+class CurrencyUSD : Currency
+{
+    public CurrencyUSD(decimal value) : base(value) { }
+
+    public static CurrencyUSD ConvertToUSD(Currency currency)
+    {
+        // Здесь вы можете задать обменный курс для USD
+        decimal exchangeRate = 1.0m;
+        return new CurrencyUSD(currency.Value / exchangeRate);
+    }
+}
+
+class CurrencyEUR : Currency
+{
+    public CurrencyEUR(decimal value) : base(value) { }
+
+    public static CurrencyEUR ConvertToEUR(Currency currency)
+    {
+        // Здесь вы можете задать обменный курс для EUR
+        decimal exchangeRate = 0.85m;
+        return new CurrencyEUR(currency.Value / exchangeRate);
+    }
+}
+
+class CurrencyRUB : Currency
+{
+    public CurrencyRUB(decimal value) : base(value) { }
+
+    public static CurrencyRUB ConvertToRUB(Currency currency)
+    {
+        // Здесь вы можете задать обменный курс для RUB
+        decimal exchangeRate = 97.0m;
+        return new CurrencyRUB(currency.Value / exchangeRate);
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.Write("Введите сумму в исходной валюте: ");
+        decimal inputValue = decimal.Parse(Console.ReadLine());
+
+        Console.Write("Выберите целевую валюту (USD, EUR, RUB): ");
+        string targetCurrency = Console.ReadLine().ToUpper();
+
+        Currency sourceCurrency = new Currency(inputValue);
+
+        decimal targetValue = 0;
+
+        switch (targetCurrency)
+        {
+            case "USD":
+                targetValue = CurrencyUSD.ConvertToUSD(sourceCurrency).Value;
+                break;
+            case "EUR":
+                targetValue = CurrencyEUR.ConvertToEUR(sourceCurrency).Value;
+                break;
+            case "RUB":
+                targetValue = CurrencyRUB.ConvertToRUB(sourceCurrency).Value;
+                break;
+            default:
+                Console.WriteLine("Неверно выбрана целевая валюта.");
+                break;
+        }
+
+        Console.WriteLine($"Сумма в целевой валюте: {targetValue}");
+
+        Console.ReadLine(); // Добавляем эту строку, чтобы консоль не закрывалась сразу
+    }
+}
+
